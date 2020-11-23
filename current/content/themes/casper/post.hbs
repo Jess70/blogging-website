@@ -108,22 +108,6 @@ into the {body} of the default.hbs template --}}
             <section class="post-full-content">
                 <div class="post-content">
                     {{content}}
-                    <a id="nodebb-comments"></a>
-                    <script type="text/javascript">
-                        var nbb = {};
-                        nbb.url = 'https://opposite-lock.com/'; // EDIT THIS
-
-                        (function () {
-                            nbb.articleID = '{{../post.id}}';
-                            nbb.tags = [{{ #../ post.tags }}"{{name}}", {{ /../post.tags }}];
-                        nbb.script = document.createElement('script'); nbb.script.type = 'text/javascript'; nbb.script.async = true;
-                        nbb.script.src = nbb.url + '/plugins/nodebb-plugin-blog-comments/lib/ghost.js';
-                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(nbb.script);
-                    }) ();
-                    </script>
-                    <script id="nbb-title" type="text/markdown">{{../post.title}}</script>
-                    <script id="nbb-markdown" type="text/markdown">{{../post.markdown}}</script>
-                    <noscript>Please enable JavaScript to view comments</noscript>
                 </div>
             </section>
 
@@ -131,7 +115,19 @@ into the {body} of the default.hbs template --}}
             {{#if @labs.members}}
             {{> subscribe-form}}
             {{/if}}
-
+            <div id="disqus_thread"></div>
+            <script>
+                var disqus_config = function () {
+                    this.page.url = "{{url absolute="true"}}";
+                    this.page.identifier = "ghost-{{comment_id}}"
+                };
+                (function () {
+                    var d = document, s = d.createElement('script');
+                    s.src = 'https://bloggingdotweb.disqus.com/embed.js';
+                    s.setAttribute('data-timestamp', +new Date());
+                    (d.head || d.body).appendChild(s);
+                })();
+            </script>
             {{!--
             <section class="post-full-comments">
                 If you want to embed comments, this is a good place to do it!
